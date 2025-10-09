@@ -87,4 +87,4 @@ Mình để link script ở repo này: https://github.com/dinhkarate/autounatten
 
 ## Lưu ý
 * Script này chỉ hoạt động ở các bản **Windows Server Evaluation**, nếu sử dụng Windows 10, Windows 11 và các bản Windows Server khác => bạn có thể tham khảo bên [đây](https://github.com/memstechtips/UnattendedWinstall)
-* Hoạt động tốt nhất trên Windows Server 2022
+* Được thiết kế riêng cho Windows 2022 nên hoạt động tốt nhất trên Windows Server 2022
