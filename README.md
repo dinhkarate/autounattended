@@ -1,6 +1,6 @@
 ## Chức năng của script này
 * Tự động điền ngôn ngữ, múi giờ, layout bàn phím
-* Tự động nhập tên người dùng, mật khẩu Administrator
+* Tự động nhập tên người dùng, mật khẩu Administrator **(User: Administrator; Password: admin)**
 * Tự động chia phân vùng ổ đĩa, chọn ổ cài đặt, bỏ qua màn hình OOBE (Out-of-box experience)
 * Tự động tham gia domain, cài đặt drivers, chạy scripts sau khi cài
 
