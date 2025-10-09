@@ -82,9 +82,6 @@ Có một đoạn như thế này, bình thường mình sẽ sử dụng ``irm 
           <CommandLine>powershell -ExecutionPolicy Bypass -Command "echo Hello Powershell"</CommandLine>
 ```
 
-## Link Script
-Mình để link script ở repo này: https://github.com/dinhkarate/autounattended
-
 ## Lưu ý
 * Script này chỉ hoạt động ở các bản **Windows Server Evaluation**, nếu sử dụng Windows 10, Windows 11 và các bản Windows Server khác => bạn có thể tham khảo bên [đây](https://github.com/memstechtips/UnattendedWinstall)
 * Được thiết kế riêng cho Windows 2022 nên hoạt động tốt nhất trên Windows Server 2022
