@@ -1,3 +1,4 @@
+# ENGLISH BELOW
 ## Chức năng của script này
 * Tự động điền ngôn ngữ, múi giờ, layout bàn phím
 * Tự động nhập tên người dùng, mật khẩu Administrator **(User: Administrator; Password: admin)**
@@ -86,3 +87,96 @@ Có một đoạn như thế này, bình thường mình sẽ sử dụng ``irm 
 * Script này chỉ hoạt động ở các bản **Windows Server Evaluation**, nếu sử dụng Windows 10, Windows 11 và các bản Windows Server khác => bạn có thể tham khảo bên [đây](https://github.com/memstechtips/UnattendedWinstall)
 * Được thiết kế riêng cho Windows 2022 nên hoạt động tốt nhất trên Windows Server 2022
 * Có hai phiên bản cho SeaBIOS và UEFI
+
+---
+
+# ENGLISH VERSION
+
+## Script Features
+* Automatically fills in language, time zone, and keyboard layout
+* Automatically enters username and Administrator password **(User: Administrator; Password: admin)**
+* Automatically partitions disk, selects installation drive, skips OOBE (Out-of-box experience) screen
+* Automatically joins domain, installs drivers, and runs post-installation scripts
+
+## How to Use autounattend.xml File
+### Method 1: Using USB Boot
+
+1. Prepare a bootable USB with Windows ISO.
+2. Connect the USB and copy the `autounattend.xml` file to the root directory of the USB — do not place it in a subdirectory.
+
+The USB directory structure should look like this:
+
+```
+USB:\
+├── autounattend.xml
+├── setup.exe
+├── sources\
+├── boot\
+```
+
+3. Boot the computer from USB.
+4. The Windows installation process will automatically read the `autounattend.xml` file and start the installation while you just sit back and wait.
+
+### Method 2: Editing the ISO File
+
+1. Extract the Windows ISO file to a folder on your computer.
+2. Copy the `autounattend.xml` file to the root directory of the extracted ISO (usually the folder containing `setup.exe`).
+3. Use the `oscdimg.exe` tool (from [Windows ADK](https://learn.microsoft.com/en-us/windows-hardware/get-started/adk-servicing)) to repack it into a new ISO file.
+
+Example repack command:
+
+```
+oscdimg.exe -m -o -u2 -udfver102 -bootdata:2#p0,e,b<boot_folder>\etfsboot.com#pEF,e,b<boot_folder>\efisys.bin <source_folder> <output_iso>
+```
+
+Where:
+- `<boot_folder>`: The boot folder in the extracted ISO.
+- `<source_folder>`: The folder containing the extracted ISO content and the `autounattend.xml` file.
+- `<output_iso>`: The path to the new ISO file.
+
+4. Use the new ISO file to install Windows, you can create it with Rufus, Ventoy, or use it in Proxmox, VM
+
+## Guide to Modify Specific Fields
+### Image Index
+For those who don't know, the index in the ISO file is this
+
+![image.png](https://images.viblo.asia/3dbba2ac-9d2c-4ee6-8dcf-62c10526f2e9.png)
+
+I always install version 4, which is Datacenter (Desktop Experience), corresponding to the index number below. You can change it to suit your needs.
+
+```xml
+            <MetaData wcm:action="add">
+              <Key>/IMAGE/INDEX</Key>
+              <Value>4</Value>
+            </MetaData>
+```
+
+### Default Password for Administrator
+Here I'm setting it to ``admin``, you can change it according to your preference
+```powershell
+      <UserAccounts>
+        <AdministratorPassword>
+          <Value>admin</Value>
+          <PlainText>true</PlainText>
+        </AdministratorPassword>
+      </UserAccounts>
+      <AutoLogon>
+        <Username>Administrator</Username>
+        <Password>
+          <Value>admin</Value>
+          <PlainText>true</PlainText>
+        </Password>
+        <Enabled>true</Enabled>
+        <LogonCount>1</LogonCount>
+      </AutoLogon>
+```
+### Running PowerShell Script After Installation
+There's a section like this - normally I use ``irm link | iex`` to proceed with installation. You can modify it if you want, otherwise it's better to keep it as is
+```powershell
+          <CommandLine>powershell -ExecutionPolicy Bypass -Command "echo Hello Powershell"</CommandLine>
+```
+
+## Notes
+* This script only works with **Windows Server Evaluation** editions. If using Windows 10, Windows 11, or other Windows Server editions => you can refer to [here](https://github.com/memstechtips/UnattendedWinstall)
+* Specifically designed for Windows 2022, so it works best on Windows Server 2022
+* Two versions available for SeaBIOS and UEFI
